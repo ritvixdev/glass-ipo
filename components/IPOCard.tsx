@@ -47,7 +47,15 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo }) => {
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8} testID={`ipo-card-${ipo.id}`}>
-      <GlassContainer style={styles.container}>
+      <GlassContainer 
+        style={styles.container}
+        elasticity={0.25}
+        displacementScale={60}
+        blurAmount={0.08}
+        saturation={120}
+        aberrationIntensity={1.5}
+        cornerRadius={20}
+      >
         <View style={styles.header}>
           <Image source={{ uri: ipo.logo }} style={styles.logo} contentFit="cover" />
           <View style={styles.headerContent}>

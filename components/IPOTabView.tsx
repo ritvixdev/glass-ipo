@@ -24,7 +24,15 @@ export const IPOTabView: React.FC<IPOTabViewProps> = ({ category }) => {
 
   return (
     <View style={styles.container}>
-      <GlassContainer style={styles.tabContainer}>
+      <GlassContainer 
+        style={styles.tabContainer}
+        elasticity={0.2}
+        displacementScale={40}
+        blurAmount={0.05}
+        saturation={110}
+        aberrationIntensity={1.2}
+        cornerRadius={16}
+      >
         <View style={styles.tabs}>
           {tabs.map((tab) => (
             <TouchableOpacity

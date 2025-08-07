@@ -26,7 +26,15 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
   };
 
   return (
-    <GlassContainer style={styles.container}>
+    <GlassContainer 
+      style={styles.container}
+      elasticity={0.3}
+      displacementScale={50}
+      blurAmount={0.06}
+      saturation={130}
+      aberrationIntensity={1.8}
+      cornerRadius={18}
+    >
       <View style={styles.iconContainer}>{getIcon()}</View>
       <View style={styles.contentContainer}>
         <Text style={[styles.title, { color: colors.subtext }]}>{stat.title}</Text>

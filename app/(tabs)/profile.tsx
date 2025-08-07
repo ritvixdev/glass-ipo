@@ -49,7 +49,15 @@ export default function ProfileScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <GlassContainer style={styles.profileCard}>
+        <GlassContainer 
+          style={styles.profileCard}
+          elasticity={0.35}
+          displacementScale={80}
+          blurAmount={0.1}
+          saturation={150}
+          aberrationIntensity={2.2}
+          cornerRadius={24}
+        >
           <View style={styles.profileHeader}>
             <Image
               source={{ uri: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=200&auto=format&fit=crop" }}
@@ -68,7 +76,15 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Preferences</Text>
           
-          <GlassContainer style={styles.themeToggleContainer}>
+          <GlassContainer 
+            style={styles.themeToggleContainer}
+            elasticity={0.25}
+            displacementScale={45}
+            blurAmount={0.06}
+            saturation={125}
+            aberrationIntensity={1.5}
+            cornerRadius={16}
+          >
             <View style={styles.themeToggleContent}>
               <Moon size={22} color={colors.text} />
               <Text style={[styles.themeToggleText, { color: colors.text }]}>Dark Mode</Text>
@@ -83,7 +99,15 @@ export default function ProfileScreen() {
           
           {profileOptions.map((option, index) => (
             <TouchableOpacity key={index} activeOpacity={0.7}>
-              <GlassContainer style={styles.optionContainer}>
+              <GlassContainer 
+                style={styles.optionContainer}
+                elasticity={0.2}
+                displacementScale={35}
+                blurAmount={0.04}
+                saturation={115}
+                aberrationIntensity={1.0}
+                cornerRadius={12}
+              >
                 <View style={styles.optionIcon}>{option.icon}</View>
                 <View style={styles.optionContent}>
                   <Text style={[styles.optionTitle, { color: colors.text }]}>{option.title}</Text>
@@ -95,7 +119,15 @@ export default function ProfileScreen() {
         </View>
 
         <TouchableOpacity activeOpacity={0.7}>
-          <GlassContainer style={styles.logoutContainer}>
+          <GlassContainer 
+            style={styles.logoutContainer}
+            elasticity={0.3}
+            displacementScale={50}
+            blurAmount={0.07}
+            saturation={120}
+            aberrationIntensity={1.8}
+            cornerRadius={16}
+          >
             <LogOut size={20} color={colors.error} />
             <Text style={[styles.logoutText, { color: colors.error }]}>Log Out</Text>
           </GlassContainer>
