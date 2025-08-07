@@ -5,7 +5,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ThemeProvider } from "@/hooks/useTheme";
+import { ThemeProvider, useTheme } from "@/hooks/useTheme";
+import { View, ActivityIndicator } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,20 @@ function RootLayoutNav() {
   );
 }
 
+function ThemedApp() {
+  const { isLoading, colors } = useTheme();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  return <RootLayoutNav />;
+}
+
 export default function RootLayout() {
   useEffect(() => {
     SplashScreen.hideAsync();
@@ -37,7 +52,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <BundleInspector><RorkErrorBoundary><RootLayoutNav /></RorkErrorBoundary></BundleInspector>
+          <BundleInspector><RorkErrorBoundary><ThemedApp /></RorkErrorBoundary></BundleInspector>
         </GestureHandlerRootView>
       </ThemeProvider>
     </QueryClientProvider>

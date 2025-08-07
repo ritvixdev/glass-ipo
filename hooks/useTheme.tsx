@@ -57,25 +57,31 @@ export const [ThemeProvider, useTheme] = createContextHook(() => {
   const systemTheme = useColorScheme() as ThemeType | null;
   const [themeType, setThemeType] = useState<ThemeType>('system');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isInitialized) return;
+    
     const loadTheme = async () => {
       try {
         const savedTheme = await AsyncStorage.getItem('theme');
-        if (savedTheme) {
+        if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system')) {
           setThemeType(savedTheme as ThemeType);
         }
       } catch (error) {
         console.error('Failed to load theme preference:', error);
       } finally {
         setIsLoading(false);
+        setIsInitialized(true);
       }
     };
 
     loadTheme();
-  }, []);
+  }, [isInitialized]);
 
   const setTheme = async (theme: ThemeType) => {
+    if (!isInitialized) return;
+    
     setThemeType(theme);
     try {
       await AsyncStorage.setItem('theme', theme);
@@ -84,7 +90,7 @@ export const [ThemeProvider, useTheme] = createContextHook(() => {
     }
   };
 
-  const actualTheme = themeType === 'system' ? systemTheme || 'light' : themeType;
+  const actualTheme = themeType === 'system' ? (systemTheme || 'light') : themeType;
   const colors = actualTheme === 'dark' ? darkColors : lightColors;
 
   return {
@@ -93,5 +99,6 @@ export const [ThemeProvider, useTheme] = createContextHook(() => {
     colors,
     setTheme,
     isLoading,
+    isInitialized,
   };
 });
