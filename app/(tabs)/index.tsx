@@ -63,20 +63,16 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <GlassContainer 
-           style={styles.quickStatsContainer}
-           elevation="low"
-           variant="default"
-           cornerRadius={20}
-           padding={24}
-           interactive={false}
-         >
-           <View style={styles.statsContainer}>
-             {quickStats.map((stat, index) => (
-               <StatsCard key={index} stat={stat} />
-             ))}
-           </View>
-         </GlassContainer>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.statsScrollContainer}
+          style={styles.quickStatsContainer}
+        >
+          {quickStats.map((stat, index) => (
+            <StatsCard key={index} stat={stat} />
+          ))}
+        </ScrollView>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -150,10 +146,8 @@ const styles = StyleSheet.create({
   quickStatsContainer: {
     marginBottom: 32,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16,
+  statsScrollContainer: {
+    paddingHorizontal: 16,
   },
   section: {
     marginBottom: 24,

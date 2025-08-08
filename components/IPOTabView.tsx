@@ -29,7 +29,7 @@ export const IPOTabView: React.FC<IPOTabViewProps> = ({ category }) => {
         elevation="low"
         variant="default"
         cornerRadius={16}
-        padding={16}
+        padding={8}
         interactive={false}
       >
         <View style={styles.tabs}>
@@ -88,11 +88,11 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    padding: 4,
+    padding: 2,
   },
   tab: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 6,
     alignItems: 'center',
     borderRadius: 12,
   },

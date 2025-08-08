@@ -2,8 +2,10 @@ import { GlassContainer } from '@/components/ui/GlassContainer';
 import { useTheme } from '@/hooks/useTheme';
 import { QuickStat } from '@/types/ipo';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { BarChart2, TrendingUp, Users } from 'lucide-react-native';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 interface StatsCardProps {
   stat: QuickStat;
@@ -62,8 +64,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
+    width: (screenWidth - 64) / 3,
     marginBottom: 16,
+    marginRight: 8,
     minHeight: 120,
   },
   iconContainer: {
