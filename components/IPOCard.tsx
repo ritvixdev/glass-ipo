@@ -6,12 +6,14 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar, TrendingUp } from 'lucide-react-native';
+import SkeletonPlaceholder from '@/components/ui/SkeletonPlaceholder';
 
 interface IPOCardProps {
   ipo: IPO;
+  isLoading?: boolean;
 }
 
-export const IPOCard: React.FC<IPOCardProps> = ({ ipo }) => {
+export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
   const { colors } = useTheme();
   const router = useRouter();
 
@@ -44,6 +46,61 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo }) => {
         return '';
     }
   };
+
+  if (isLoading) {
+    return (
+      <GlassContainer 
+        style={styles.container}
+        elasticity={0.25}
+        displacementScale={60}
+        blurAmount={0.08}
+        saturation={120}
+        aberrationIntensity={1.5}
+        cornerRadius={20}
+      >
+        <SkeletonPlaceholder backgroundColor={colors.surface} highlightColor={colors.border}>
+          <View style={styles.header}>
+            <SkeletonPlaceholder.Item width={40} height={40} borderRadius={8} />
+            <View style={styles.headerContent}>
+              <SkeletonPlaceholder.Item width={120} height={16} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={60} height={14} borderRadius={4} marginTop={4} />
+            </View>
+            <SkeletonPlaceholder.Item width={60} height={20} borderRadius={12} />
+          </View>
+
+          <View style={[styles.divider, { marginVertical: 12 }]}>
+            <SkeletonPlaceholder.Item width="100%" height={1} />
+          </View>
+
+          <View style={styles.details}>
+            <View style={styles.detailRow}>
+              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={60} height={14} borderRadius={4} />
+            </View>
+            <View style={styles.detailRow}>
+              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={70} height={14} borderRadius={4} />
+            </View>
+            <View style={styles.detailRow}>
+              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={50} height={14} borderRadius={4} />
+            </View>
+          </View>
+
+          <View style={styles.footer}>
+            <View style={styles.footerItem}>
+              <SkeletonPlaceholder.Item width={16} height={16} borderRadius={2} />
+              <SkeletonPlaceholder.Item width={100} height={12} borderRadius={4} marginLeft={4} />
+            </View>
+            <View style={styles.footerItem}>
+              <SkeletonPlaceholder.Item width={16} height={16} borderRadius={2} />
+              <SkeletonPlaceholder.Item width={40} height={12} borderRadius={4} marginLeft={4} />
+            </View>
+          </View>
+        </SkeletonPlaceholder>
+      </GlassContainer>
+    );
+  }
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.8} testID={`ipo-card-${ipo.id}`}>
