@@ -2,12 +2,14 @@ import { GlassContainer } from "@/components/ui/GlassContainer";
 import { useTheme } from "@/hooks/useTheme";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Switch } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Switch, StatusBar } from "react-native";
 import { Image } from "expo-image";
-import { Bell, BookmarkCheck, HelpCircle, LogOut, Moon, Settings, User } from "lucide-react-native";
+import { Bell, BookmarkCheck, HelpCircle, LogOut, Moon, Settings, User, Sun } from "lucide-react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { colors, theme, setTheme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -38,6 +40,11 @@ export default function ProfileScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar 
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} 
+        backgroundColor="transparent" 
+        translucent 
+      />
       <LinearGradient
         colors={
           theme === 'dark'
@@ -47,6 +54,28 @@ export default function ProfileScreen() {
         locations={theme === 'dark' ? [0, 0.4, 1] : [0, 0.7, 1]}
         style={styles.gradient}
       />
+      
+      {/* Header with Title and Actions */}
+      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+        <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
+        <View style={styles.headerActions}>
+          <TouchableOpacity 
+            style={[styles.iconButton, { backgroundColor: colors.card }]}
+            onPress={toggleTheme}
+          >
+            {theme === "dark" ? (
+              <Sun size={20} color={colors.text} />
+            ) : (
+              <Moon size={20} color={colors.text} />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.iconButton, { backgroundColor: colors.card }]}
+          >
+            <Bell size={20} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
       
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -150,6 +179,28 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+  },
+  headerActions: {
+    flexDirection: "row",
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 8,
   },
   scrollContent: {
     padding: 16,

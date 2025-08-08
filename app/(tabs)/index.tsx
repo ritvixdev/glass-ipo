@@ -5,11 +5,13 @@ import { useTheme } from "@/hooks/useTheme";
 import { getIPOsByStatus, quickStats } from "@/mocks/ipos";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar } from "react-native";
 import { Bell, Moon, Sun } from "lucide-react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
   const { colors, theme, setTheme } = useTheme();
+  const insets = useSafeAreaInsets();
   
   const liveIPOs = getIPOsByStatus("live", "all").slice(0, 3);
   const upcomingIPOs = getIPOsByStatus("upcoming", "all").slice(0, 2);
@@ -20,6 +22,11 @@ export default function DashboardScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar 
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} 
+        backgroundColor="transparent" 
+        translucent 
+      />
       <LinearGradient
         colors={
           theme === 'dark'
@@ -30,11 +37,9 @@ export default function DashboardScreen() {
         style={styles.gradient}
       />
       
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.greeting, { color: colors.text }]}>Welcome back</Text>
-          <Text style={[styles.title, { color: colors.text }]}>IPO Tracker</Text>
-        </View>
+      {/* Header with Title and Actions */}
+      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+        <Text style={[styles.title, { color: colors.text }]}>IPO Tracker</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity 
             style={[styles.iconButton, { backgroundColor: colors.card }]}
@@ -117,7 +122,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: 16,
     paddingBottom: 8,
   },
   greeting: {

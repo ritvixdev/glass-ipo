@@ -24,7 +24,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "IPO Tracker",
+          headerShown: false,
           tabBarIcon: ({ color }) => <Home size={24} color={color} />,
         }}
       />
@@ -32,6 +33,7 @@ export default function TabLayout() {
         name="mainline"
         options={{
           title: "Mainline IPOs",
+          headerShown: false,
           tabBarIcon: ({ color }) => <BarChart2 size={24} color={color} />,
         }}
       />
@@ -39,6 +41,7 @@ export default function TabLayout() {
         name="sme"
         options={{
           title: "SME IPOs",
+          headerShown: false,
           tabBarIcon: ({ color }) => <BarChart2 size={24} color={color} />,
         }}
       />
@@ -46,6 +49,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ color }) => <User size={24} color={color} />,
         }}
       />
