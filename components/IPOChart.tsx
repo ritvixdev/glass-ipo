@@ -227,12 +227,11 @@ export const IPOChart: React.FC<IPOChartProps> = ({
   return (
     <GlassContainer
       style={styles.container}
-      elasticity={0.15}
-      displacementScale={40}
-      blurAmount={0.05}
-      saturation={110}
-      aberrationIntensity={1.2}
+      elevation="medium"
+      variant="default"
       cornerRadius={16}
+      padding={20}
+      interactive={false}
     >
       {title && (
         <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
@@ -246,7 +245,6 @@ export const IPOChart: React.FC<IPOChartProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     marginBottom: 16,
   },
   title: {

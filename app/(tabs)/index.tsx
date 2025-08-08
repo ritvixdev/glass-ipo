@@ -1,5 +1,6 @@
 import { StatsCard } from "@/components/StatsCard";
 import { IPOCard } from "@/components/IPOCard";
+import { GlassContainer } from "@/components/ui/GlassContainer";
 import { useTheme } from "@/hooks/useTheme";
 import { getIPOsByStatus, quickStats } from "@/mocks/ipos";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,9 +21,12 @@ export default function DashboardScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
-        colors={theme === "dark" 
-          ? ["#1A1D1F", "#111315"] 
-          : ["#F5F7FA", "#FFFFFF"]}
+        colors={
+          theme === 'dark'
+            ? ['#0F1419', '#1A202C', '#2D3748']
+            : ['#F0F8FF', '#E6F3FF', '#FAFBFC']
+        }
+        locations={theme === 'dark' ? [0, 0.4, 1] : [0, 0.7, 1]}
         style={styles.gradient}
       />
       
@@ -54,11 +58,20 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <View style={styles.statsContainer}>
-          {quickStats.map((stat, index) => (
-            <StatsCard key={index} stat={stat} />
-          ))}
-        </View>
+        <GlassContainer 
+           style={styles.quickStatsContainer}
+           elevation="low"
+           variant="default"
+           cornerRadius={20}
+           padding={24}
+           interactive={false}
+         >
+           <View style={styles.statsContainer}>
+             {quickStats.map((stat, index) => (
+               <StatsCard key={index} stat={stat} />
+             ))}
+           </View>
+         </GlassContainer>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -97,7 +110,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: 300,
+    bottom: 0,
   },
   header: {
     flexDirection: "row",
@@ -130,11 +143,13 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 32,
   },
+  quickStatsContainer: {
+    marginBottom: 32,
+  },
   statsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 24,
-    gap: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16,
   },
   section: {
     marginBottom: 24,

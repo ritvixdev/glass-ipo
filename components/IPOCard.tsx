@@ -24,7 +24,7 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
   const getStatusColor = () => {
     switch (ipo.status) {
       case 'live':
-        return colors.success;
+        return colors.accent;
       case 'upcoming':
         return colors.warning;
       case 'listed':
@@ -51,51 +51,39 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
     return (
       <GlassContainer 
         style={styles.container}
-        elasticity={0.25}
-        displacementScale={60}
-        blurAmount={0.08}
-        saturation={120}
-        aberrationIntensity={1.5}
-        cornerRadius={20}
+        elevation="medium"
+        variant="default"
+        cornerRadius={16}
+        padding={20}
+        interactive={false}
       >
-        <SkeletonPlaceholder backgroundColor={colors.surface} highlightColor={colors.border}>
+        <SkeletonPlaceholder>
           <View style={styles.header}>
-            <SkeletonPlaceholder.Item width={40} height={40} borderRadius={8} />
+            <SkeletonPlaceholder.Item width={48} height={48} borderRadius={12} />
             <View style={styles.headerContent}>
-              <SkeletonPlaceholder.Item width={120} height={16} borderRadius={4} />
-              <SkeletonPlaceholder.Item width={60} height={14} borderRadius={4} marginTop={4} />
+              <SkeletonPlaceholder.Item width={140} height={18} borderRadius={6} marginBottom={6} />
+              <SkeletonPlaceholder.Item width={90} height={14} borderRadius={4} />
             </View>
-            <SkeletonPlaceholder.Item width={60} height={20} borderRadius={12} />
+            <SkeletonPlaceholder.Item width={70} height={28} borderRadius={14} />
           </View>
-
-          <View style={[styles.divider, { marginVertical: 12 }]}>
-            <SkeletonPlaceholder.Item width="100%" height={1} />
-          </View>
-
+          <SkeletonPlaceholder.Item width="100%" height={1} borderRadius={0} marginVertical={16} />
           <View style={styles.details}>
             <View style={styles.detailRow}>
-              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
-              <SkeletonPlaceholder.Item width={60} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={90} height={16} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={70} height={16} borderRadius={4} />
             </View>
             <View style={styles.detailRow}>
-              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
-              <SkeletonPlaceholder.Item width={70} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={80} height={16} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={90} height={16} borderRadius={4} />
             </View>
             <View style={styles.detailRow}>
-              <SkeletonPlaceholder.Item width={80} height={14} borderRadius={4} />
-              <SkeletonPlaceholder.Item width={50} height={14} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={100} height={16} borderRadius={4} />
+              <SkeletonPlaceholder.Item width={80} height={16} borderRadius={4} />
             </View>
           </View>
-
           <View style={styles.footer}>
-            <View style={styles.footerItem}>
-              <SkeletonPlaceholder.Item width={16} height={16} borderRadius={2} />
-              <SkeletonPlaceholder.Item width={100} height={12} borderRadius={4} marginLeft={4} />
-            </View>
-            <View style={styles.footerItem}>
-              <SkeletonPlaceholder.Item width={16} height={16} borderRadius={2} />
-              <SkeletonPlaceholder.Item width={40} height={12} borderRadius={4} marginLeft={4} />
-            </View>
+            <SkeletonPlaceholder.Item width={90} height={14} borderRadius={4} />
+            <SkeletonPlaceholder.Item width={110} height={14} borderRadius={4} />
           </View>
         </SkeletonPlaceholder>
       </GlassContainer>
@@ -103,16 +91,15 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
   }
 
   return (
-    <TouchableOpacity onPress={handlePress} activeOpacity={0.8} testID={`ipo-card-${ipo.id}`}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.95}>
       <GlassContainer 
-        style={styles.container}
-        elasticity={0.25}
-        displacementScale={60}
-        blurAmount={0.08}
-        saturation={120}
-        aberrationIntensity={1.5}
-        cornerRadius={20}
-      >
+         style={styles.container}
+         elevation="medium"
+         variant="default"
+         cornerRadius={16}
+         padding={20}
+         interactive={true}
+       >
         <View style={styles.header}>
           <Image source={{ uri: ipo.logo }} style={styles.logo} contentFit="cover" />
           <View style={styles.headerContent}>
@@ -161,8 +148,8 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
           </View>
           {ipo.status === 'live' && ipo.subscriptionRate && (
             <View style={styles.footerItem}>
-              <TrendingUp size={16} color={colors.success} />
-              <Text style={[styles.footerText, { color: colors.success }]}>
+              <TrendingUp size={16} color={parseFloat(ipo.subscriptionRate) > 5 ? colors.accent : colors.success} />
+              <Text style={[styles.footerText, { color: parseFloat(ipo.subscriptionRate) > 5 ? colors.accent : colors.success }]}>
                 {ipo.subscriptionRate}x
               </Text>
             </View>
@@ -195,67 +182,81 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
-    padding: 16,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 16,
   },
   logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 12,
   },
   headerContent: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 16,
   },
   companyName: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 4,
+    letterSpacing: -0.3,
   },
   symbol: {
     fontSize: 14,
+    fontWeight: '500',
+    opacity: 0.8,
   },
   statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
   },
   statusText: {
     color: 'white',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   divider: {
     height: 1,
-    marginVertical: 12,
+    marginVertical: 16,
+    opacity: 0.1,
   },
   details: {
-    marginBottom: 12,
+    marginBottom: 16,
   },
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    marginBottom: 12,
+    alignItems: 'center',
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: '500',
+    opacity: 0.8,
   },
   detailValue: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: -0.2,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingTop: 8,
   },
   footerItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 12,
-    marginLeft: 4,
+    fontSize: 13,
+    marginLeft: 6,
+    fontWeight: '500',
+    opacity: 0.7,
   },
 });

@@ -51,9 +51,12 @@ export default function IPODetailScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
-        colors={theme === "dark" 
-          ? ["#1A1D1F", "#111315"] 
-          : ["#F5F7FA", "#FFFFFF"]}
+        colors={
+          theme === 'dark'
+            ? ['#0F1419', '#1A202C', '#2D3748']
+            : ['#F0F8FF', '#E6F3FF', '#FAFBFC']
+        }
+        locations={theme === 'dark' ? [0, 0.4, 1] : [0, 0.7, 1]}
         style={styles.gradient}
       />
       
@@ -103,7 +106,14 @@ export default function IPODetailScreen() {
         </View>
 
         {ipo.status === 'live' && ipo.subscriptionRate && (
-          <GlassContainer style={styles.subscriptionContainer}>
+          <GlassContainer 
+            style={styles.subscriptionContainer}
+            elevation="high"
+            variant="default"
+            cornerRadius={20}
+            padding={24}
+            interactive={false}
+          >
             <View style={styles.subscriptionHeader}>
               <Text style={[styles.subscriptionTitle, { color: colors.text }]}>Subscription Status</Text>
               <Clock size={16} color={colors.subtext} />
@@ -140,7 +150,14 @@ export default function IPODetailScreen() {
         )}
 
         {ipo.status === 'listed' && ipo.listingGain && (
-          <GlassContainer style={styles.listingContainer}>
+          <GlassContainer 
+            style={styles.listingContainer}
+            elevation="high"
+            variant="default"
+            cornerRadius={20}
+            padding={24}
+            interactive={false}
+          >
             <View style={styles.listingHeader}>
               <Text style={[styles.listingTitle, { color: colors.text }]}>Listing Performance</Text>
               <TrendingUp size={16} color={ipo.listingGain >= 0 ? colors.success : colors.error} />
@@ -163,12 +180,26 @@ export default function IPODetailScreen() {
           </GlassContainer>
         )}
 
-        <GlassContainer style={styles.sectionContainer}>
+        <GlassContainer 
+          style={styles.sectionContainer}
+          elevation="medium"
+          variant="default"
+          cornerRadius={16}
+          padding={20}
+          interactive={false}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Company Overview</Text>
           <Text style={[styles.sectionContent, { color: colors.text }]}>{ipo.description}</Text>
         </GlassContainer>
 
-        <GlassContainer style={styles.sectionContainer}>
+        <GlassContainer 
+          style={styles.sectionContainer}
+          elevation="medium"
+          variant="default"
+          cornerRadius={16}
+          padding={20}
+          interactive={false}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Financial Highlights</Text>
           <View style={styles.financialGrid}>
             <View style={styles.financialItem}>
@@ -190,7 +221,14 @@ export default function IPODetailScreen() {
           </View>
         </GlassContainer>
 
-        <GlassContainer style={styles.sectionContainer}>
+        <GlassContainer 
+          style={styles.sectionContainer}
+          elevation="medium"
+          variant="default"
+          cornerRadius={16}
+          padding={20}
+          interactive={false}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Issue Details</Text>
           <View style={styles.issueDetails}>
             <View style={styles.issueDetailRow}>
@@ -254,7 +292,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: 300,
+    bottom: 0,
   },
   scrollContent: {
     padding: 16,
@@ -322,7 +360,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   subscriptionContainer: {
-    padding: 16,
     marginBottom: 16,
   },
   subscriptionHeader: {
@@ -367,7 +404,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   listingContainer: {
-    padding: 16,
     marginBottom: 16,
   },
   listingHeader: {
@@ -392,7 +428,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   sectionContainer: {
-    padding: 16,
     marginBottom: 16,
   },
   sectionTitle: {

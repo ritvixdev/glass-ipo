@@ -1,146 +1,163 @@
 import { useTheme } from '@/hooks/useTheme';
-import { BlurView } from 'expo-blur';
 import React from 'react';
-import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, View, ViewProps } from 'react-native';
 
-interface GlassContainerProps extends ViewProps {
-  intensity?: number;
+interface ModernCardProps extends ViewProps {
   style?: any;
-  displacementScale?: number;
-  blurAmount?: number;
-  saturation?: number;
-  aberrationIntensity?: number;
-  elasticity?: number;
   cornerRadius?: number;
-  padding?: string;
-  overLight?: boolean;
-  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  elevation?: 'low' | 'medium' | 'high';
+  variant?: 'default' | 'outlined' | 'filled';
+  padding?: number;
+  interactive?: boolean;
 }
 
-export const GlassContainer: React.FC<GlassContainerProps> = ({
+export const GlassContainer: React.FC<ModernCardProps> = ({
   children,
-  intensity = 50,
   style,
-  displacementScale = 70,
-  blurAmount = 0.0625,
-  saturation = 140,
-  aberrationIntensity = 2,
-  elasticity = 0.15,
   cornerRadius = 16,
-  padding,
-  overLight,
-  mode = 'standard',
+  elevation = 'medium',
+  variant = 'default',
+  padding = 16,
+  interactive = false,
   ...props
 }) => {
   const { theme, colors } = useTheme();
 
-  if (Platform.OS === 'web') {
-    // Advanced liquid glass effect implementation
-    return (
-      <View
-        style={[
-          {
-            position: 'relative',
-            display: 'flex',
-            fontWeight: '600',
-            overflow: 'hidden',
-            borderRadius: cornerRadius,
-            boxShadow: '0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1)',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2)',
+  const getElevationStyle = () => {
+    const isLight = theme === 'light';
+    
+    const elevations = {
+      low: Platform.OS === 'web' 
+        ? { 
+            boxShadow: isLight 
+              ? '0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06)' 
+              : '0 2px 4px rgba(0, 0, 0, 0.1)'
+          }
+        : { 
+            elevation: 2, 
+            shadowColor: isLight ? '#000' : '#000', 
+            shadowOffset: { width: 0, height: 1 }, 
+            shadowOpacity: isLight ? 0.08 : 0.1, 
+            shadowRadius: isLight ? 3 : 2 
           },
-          style,
-        ]}
-        {...props}
-      >
-        {/* Glass effect layer */}
-        <View
-          style={{
-            position: 'absolute',
-            zIndex: 0,
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: cornerRadius,
-            backdropFilter: 'blur(3px)',
-            WebkitBackdropFilter: 'blur(3px)',
-            overflow: 'hidden',
-            isolation: 'isolate',
-          }}
-        />
-        
-        {/* Tint layer */}
-        <View
-          style={{
-            zIndex: 1,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: cornerRadius,
-            backgroundColor: theme === 'dark' 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'rgba(255, 255, 255, 0.25)',
-          }}
-        />
-        
-        {/* Shine layer */}
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 2,
-            borderRadius: cornerRadius,
-            overflow: 'hidden',
-            boxShadow: theme === 'dark'
-              ? 'inset 2px 2px 1px 0 rgba(255, 255, 255, 0.2), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.2)'
-              : 'inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5)',
-          }}
-        />
-        
-        {/* Content layer */}
-        <View
-          style={{
-            zIndex: 3,
-            position: 'relative',
-          }}
-        >
-          {children}
-        </View>
-      </View>
-    );
-  }
+      medium: Platform.OS === 'web'
+        ? { 
+            boxShadow: isLight 
+              ? '0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06)' 
+              : '0 4px 12px rgba(0, 0, 0, 0.15)'
+          }
+        : { 
+            elevation: 4, 
+            shadowColor: '#000', 
+            shadowOffset: { width: 0, height: 2 }, 
+            shadowOpacity: isLight ? 0.1 : 0.15, 
+            shadowRadius: isLight ? 6 : 4 
+          },
+      high: Platform.OS === 'web'
+        ? { 
+            boxShadow: isLight 
+              ? '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)' 
+              : '0 8px 24px rgba(0, 0, 0, 0.2)'
+          }
+        : { 
+            elevation: 8, 
+            shadowColor: '#000', 
+            shadowOffset: { width: 0, height: 4 }, 
+            shadowOpacity: isLight ? 0.12 : 0.2, 
+            shadowRadius: isLight ? 10 : 8 
+          }
+    };
+    return elevations[elevation];
+  };
 
-  // Fallback to BlurView for mobile platforms
-  const blurTint = theme === 'dark' ? 'dark' : 'light';
+  const getVariantStyle = () => {
+    const isLight = theme === 'light';
+    
+    switch (variant) {
+      case 'outlined':
+        return {
+          backgroundColor: 'transparent',
+          borderWidth: 1,
+          borderColor: colors.border,
+        };
+      case 'filled':
+        return {
+          backgroundColor: colors.primary,
+        };
+      default:
+        if (isLight) {
+          return {
+            backgroundColor: colors.card,
+            borderWidth: 1,
+            borderColor: colors.glassBorder,
+            ...(Platform.OS === 'web' && {
+              background: `linear-gradient(135deg, ${colors.card} 0%, rgba(159, 122, 234, 0.08) 25%, rgba(66, 153, 225, 0.04) 75%, ${colors.card} 100%)`,
+              backdropFilter: 'blur(16px)',
+              boxShadow: `inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 1px ${colors.glassBorder}, 0 2px 8px rgba(66, 153, 225, 0.1)`,
+            })
+          };
+        } else {
+          return {
+            backgroundColor: colors.card,
+            borderWidth: 1,
+            borderColor: colors.glassBorder,
+            ...(Platform.OS === 'web' && {
+              background: `linear-gradient(135deg, ${colors.card} 0%, rgba(183, 148, 246, 0.12) 25%, rgba(99, 179, 237, 0.08) 75%, ${colors.card} 100%)`,
+              backdropFilter: 'blur(20px)',
+              boxShadow: `inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px ${colors.glassBorder}, 0 4px 12px rgba(0, 0, 0, 0.3)`,
+            })
+          };
+        }
+    }
+  };
+
+  const getInteractiveStyle = () => {
+    if (!interactive) return {};
+    
+    const isLight = theme === 'light';
+    
+    return Platform.OS === 'web' ? {
+      cursor: 'pointer',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      ':hover': {
+        transform: 'translateY(-4px) scale(1.02)',
+        boxShadow: isLight
+          ? elevation === 'high' 
+            ? '0 16px 48px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1)'
+            : elevation === 'medium'
+            ? '0 12px 32px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08)'
+            : '0 8px 24px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06)'
+          : elevation === 'high' 
+            ? '0 12px 32px rgba(0, 0, 0, 0.25)'
+            : elevation === 'medium'
+            ? '0 6px 16px rgba(0, 0, 0, 0.2)'
+            : '0 3px 8px rgba(0, 0, 0, 0.15)',
+        ...(isLight ? {
+          borderColor: colors.accent + '60',
+          background: `linear-gradient(135deg, ${colors.card} 0%, rgba(159, 122, 234, 0.12) 25%, rgba(245, 101, 101, 0.06) 75%, rgba(255, 255, 255, 0.98) 100%)`,
+        } : {
+          borderColor: colors.accent + '80',
+          background: `linear-gradient(135deg, ${colors.card} 0%, rgba(183, 148, 246, 0.18) 25%, rgba(252, 129, 129, 0.08) 75%, ${colors.card} 100%)`,
+        })
+      }
+    } : {};
+  };
 
   return (
-    <BlurView
-      intensity={intensity}
-      tint={blurTint}
+    <View
       style={[
-        styles.container,
         {
-          borderColor: colors.glassBorder,
           borderRadius: cornerRadius,
+          padding: padding,
+          ...getElevationStyle(),
+          ...getVariantStyle(),
+          ...getInteractiveStyle(),
         },
         style,
       ]}
       {...props}
     >
       {children}
-    </BlurView>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-});

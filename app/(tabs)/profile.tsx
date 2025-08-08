@@ -39,9 +39,12 @@ export default function ProfileScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
-        colors={theme === "dark" 
-          ? ["#1A1D1F", "#111315"] 
-          : ["#F5F7FA", "#FFFFFF"]}
+        colors={
+          theme === 'dark'
+            ? ['#0F1419', '#1A202C', '#2D3748']
+            : ['#F0F8FF', '#E6F3FF', '#FAFBFC']
+        }
+        locations={theme === 'dark' ? [0, 0.4, 1] : [0, 0.7, 1]}
         style={styles.gradient}
       />
       
@@ -51,12 +54,11 @@ export default function ProfileScreen() {
       >
         <GlassContainer 
           style={styles.profileCard}
-          elasticity={0.35}
-          displacementScale={80}
-          blurAmount={0.1}
-          saturation={150}
-          aberrationIntensity={2.2}
-          cornerRadius={24}
+          elevation="medium"
+          variant="default"
+          cornerRadius={20}
+          padding={24}
+          interactive={false}
         >
           <View style={styles.profileHeader}>
             <Image
@@ -78,55 +80,56 @@ export default function ProfileScreen() {
           
           <GlassContainer 
             style={styles.themeToggleContainer}
-            elasticity={0.25}
-            displacementScale={45}
-            blurAmount={0.06}
-            saturation={125}
-            aberrationIntensity={1.5}
+            elevation="medium"
+            variant="default"
             cornerRadius={16}
+            padding={20}
+            interactive={false}
           >
-            <View style={styles.themeToggleContent}>
-              <Moon size={22} color={colors.text} />
-              <Text style={[styles.themeToggleText, { color: colors.text }]}>Dark Mode</Text>
+            <View style={styles.themeToggleRow}>
+              <View style={styles.themeToggleContent}>
+                <Moon size={22} color={colors.text} />
+                <Text style={[styles.themeToggleText, { color: colors.text }]}>Dark Mode</Text>
+              </View>
+              <Switch
+                value={theme === "dark"}
+                onValueChange={toggleTheme}
+                trackColor={{ false: colors.border, true: colors.primary }}
+                thumbColor="white"
+              />
             </View>
-            <Switch
-              value={theme === "dark"}
-              onValueChange={toggleTheme}
-              trackColor={{ false: colors.border, true: colors.primary }}
-              thumbColor="white"
-            />
           </GlassContainer>
           
           {profileOptions.map((option, index) => (
-            <TouchableOpacity key={index} activeOpacity={0.7}>
+            <TouchableOpacity key={index} activeOpacity={0.95}>
               <GlassContainer 
                 style={styles.optionContainer}
-                elasticity={0.2}
-                displacementScale={35}
-                blurAmount={0.04}
-                saturation={115}
-                aberrationIntensity={1.0}
-                cornerRadius={12}
+                elevation="low"
+                variant="default"
+                cornerRadius={16}
+                padding={20}
+                interactive={true}
               >
-                <View style={styles.optionIcon}>{option.icon}</View>
-                <View style={styles.optionContent}>
-                  <Text style={[styles.optionTitle, { color: colors.text }]}>{option.title}</Text>
-                  <Text style={[styles.optionSubtitle, { color: colors.subtext }]}>{option.subtitle}</Text>
+                <View style={styles.optionRow}>
+                  <View style={styles.optionIcon}>{option.icon}</View>
+                  <View style={styles.optionContent}>
+                    <Text style={[styles.optionTitle, { color: colors.text }]}>{option.title}</Text>
+                    <Text style={[styles.optionSubtitle, { color: colors.subtext }]}>{option.subtitle}</Text>
+                  </View>
                 </View>
               </GlassContainer>
             </TouchableOpacity>
           ))}
         </View>
 
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity activeOpacity={0.95}>
           <GlassContainer 
             style={styles.logoutContainer}
-            elasticity={0.3}
-            displacementScale={50}
-            blurAmount={0.07}
-            saturation={120}
-            aberrationIntensity={1.8}
+            elevation="medium"
+            variant="outlined"
             cornerRadius={16}
+            padding={20}
+            interactive={true}
           >
             <LogOut size={20} color={colors.error} />
             <Text style={[styles.logoutText, { color: colors.error }]}>Log Out</Text>
@@ -146,15 +149,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: 300,
+    bottom: 0,
   },
   scrollContent: {
     padding: 16,
     paddingBottom: 32,
   },
   profileCard: {
-    marginBottom: 24,
-    padding: 16,
+    marginBottom: 32,
   },
   profileHeader: {
     flexDirection: "row",
@@ -193,11 +195,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   themeToggleContainer: {
+    marginBottom: 16,
+  },
+  themeToggleRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 16,
-    marginBottom: 12,
   },
   themeToggleContent: {
     flexDirection: "row",
@@ -209,10 +212,11 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   optionContainer: {
+    marginBottom: 12,
+  },
+  optionRow: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    marginBottom: 12,
   },
   optionIcon: {
     width: 40,
@@ -237,7 +241,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    padding: 16,
   },
   logoutText: {
     fontSize: 16,

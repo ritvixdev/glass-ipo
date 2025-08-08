@@ -26,12 +26,11 @@ export const IPOTabView: React.FC<IPOTabViewProps> = ({ category }) => {
     <View style={styles.container}>
       <GlassContainer 
         style={styles.tabContainer}
-        elasticity={0.2}
-        displacementScale={40}
-        blurAmount={0.05}
-        saturation={110}
-        aberrationIntensity={1.2}
+        elevation="low"
+        variant="default"
         cornerRadius={16}
+        padding={16}
+        interactive={false}
       >
         <View style={styles.tabs}>
           {tabs.map((tab) => (

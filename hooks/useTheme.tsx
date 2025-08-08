@@ -22,35 +22,35 @@ export interface ThemeColors {
 }
 
 const lightColors: ThemeColors = {
-  background: '#F5F7FA',
+  background: '#FAFBFC',
   card: '#FFFFFF',
-  text: '#1A1D1F',
-  subtext: '#6F767E',
-  primary: '#3E7BFA',
-  secondary: '#6C5DD3',
-  accent: '#7A5AF8',
-  border: '#E6E8EC',
-  success: '#58BD7D',
-  error: '#FF5252',
-  warning: '#FFB800',
-  glassBg: 'rgba(255, 255, 255, 0.7)',
-  glassBorder: 'rgba(255, 255, 255, 0.2)',
+  text: '#1A202C',
+  subtext: '#718096',
+  primary: '#4299E1',     // 60% - Soft blue for dominance
+  secondary: '#9F7AEA',   // 30% - Purple for contrast
+  accent: '#F56565',      // 10% - Coral red for emphasis
+  border: '#E2E8F0',
+  success: '#48BB78',
+  error: '#F56565',
+  warning: '#ED8936',
+  glassBg: 'rgba(255, 255, 255, 0.9)',
+  glassBorder: 'rgba(66, 153, 225, 0.15)',
 };
 
 const darkColors: ThemeColors = {
-  background: '#111315',
-  card: '#1A1D1F',
-  text: '#FCFCFD',
-  subtext: '#9A9FA5',
-  primary: '#3E7BFA',
-  secondary: '#6C5DD3',
-  accent: '#7A5AF8',
-  border: '#272B30',
-  success: '#58BD7D',
-  error: '#FF5252',
-  warning: '#FFB800',
-  glassBg: 'rgba(26, 29, 31, 0.7)',
-  glassBorder: 'rgba(255, 255, 255, 0.1)',
+  background: '#0F1419',
+  card: '#1A202C',
+  text: '#F7FAFC',
+  subtext: '#A0AEC0',
+  primary: '#63B3ED',     // 60% - Lighter blue for dark mode
+  secondary: '#B794F6',   // 30% - Lighter purple for contrast
+  accent: '#FC8181',      // 10% - Lighter coral for emphasis
+  border: '#2D3748',
+  success: '#68D391',
+  error: '#FC8181',
+  warning: '#F6AD55',
+  glassBg: 'rgba(26, 32, 44, 0.8)',
+  glassBorder: 'rgba(99, 179, 237, 0.2)',
 };
 
 export const [ThemeProvider, useTheme] = createContextHook(() => {

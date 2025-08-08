@@ -28,12 +28,11 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
   return (
     <GlassContainer 
       style={styles.container}
-      elasticity={0.3}
-      displacementScale={50}
-      blurAmount={0.06}
-      saturation={130}
-      aberrationIntensity={1.8}
-      cornerRadius={18}
+      elevation="medium"
+      variant="default"
+      cornerRadius={16}
+      padding={20}
+      interactive={false}
     >
       <View style={styles.iconContainer}>{getIcon()}</View>
       <View style={styles.contentContainer}>
@@ -61,31 +60,40 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    minHeight: 100,
+    marginBottom: 16,
+    minHeight: 120,
   },
   iconContainer: {
     marginRight: 12,
+    marginBottom: 12,
+    alignSelf: 'flex-start',
   },
   contentContainer: {
     flex: 1,
   },
   title: {
     fontSize: 14,
-    marginBottom: 4,
+    fontWeight: '600',
+    marginBottom: 8,
+    opacity: 0.8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   value: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 6,
+    letterSpacing: -0.5,
   },
   changeContainer: {
     marginTop: 4,
   },
   change: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
 });

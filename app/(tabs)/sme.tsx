@@ -10,9 +10,12 @@ export default function SMEIPOScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
-        colors={theme === "dark" 
-          ? ["#1A1D1F", "#111315"] 
-          : ["#F5F7FA", "#FFFFFF"]}
+        colors={
+          theme === 'dark'
+            ? ['#0F1419', '#1A202C', '#2D3748']
+            : ['#F0F8FF', '#E6F3FF', '#FAFBFC']
+        }
+        locations={theme === 'dark' ? [0, 0.4, 1] : [0, 0.7, 1]}
         style={styles.gradient}
       />
       <View style={styles.content}>
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: 200,
+    bottom: 0,
   },
   content: {
     flex: 1,
