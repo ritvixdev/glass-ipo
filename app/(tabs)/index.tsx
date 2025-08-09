@@ -4,21 +4,30 @@ import { GlassContainer } from "@/components/ui/GlassContainer";
 import { useTheme } from "@/hooks/useTheme";
 import { getIPOsByStatus, quickStats } from "@/mocks/ipos";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar, RefreshControl } from "react-native";
 import { Bell, Moon, Sun } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
   const { colors, theme, setTheme } = useTheme();
   const insets = useSafeAreaInsets();
-  
-  const liveIPOs = getIPOsByStatus("live", "all").slice(0, 3);
-  const upcomingIPOs = getIPOsByStatus("upcoming", "all").slice(0, 2);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const toggleTheme = () => {
+
+  const toggleTheme = useCallback(() => {
     setTheme(theme === "dark" ? "light" : "dark");
-  };
+  }, [theme, setTheme]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  }, []);
+
+  const liveIPOs = useMemo(() => getIPOsByStatus("live", "all").slice(0, 3), []);
+  const upcomingIPOs = useMemo(() => getIPOsByStatus("upcoming", "all").slice(0, 2), []);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -62,6 +71,14 @@ export default function DashboardScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+            colors={[colors.primary]}
+          />
+        }
       >
         <ScrollView
           horizontal
@@ -147,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   statsScrollContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   section: {
     marginBottom: 24,

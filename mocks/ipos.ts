@@ -175,7 +175,7 @@ export const smeIPOs: IPO[] = [
   }
 ];
 
-export const quickStats = [
+export const quickStats: QuickStat[] = [
   {
     title: 'Total Live IPOs',
     value: '12',
@@ -194,6 +194,25 @@ export const quickStats = [
     change: '-5.2',
     isPositive: false,
     icon: 'bar-chart-2'
+  },
+  {
+    title: 'Market Cap',
+    value: '₹2.4L Cr',
+    change: '+12.3',
+    isPositive: true,
+    icon: 'trending-up'
+  },
+  {
+    title: 'Success Rate',
+    value: '78%',
+    change: '+5.1',
+    isPositive: true,
+    icon: 'bar-chart-2'
+  },
+  {
+    title: 'Upcoming This Week',
+    value: '8',
+    icon: 'users'
   }
 ];
 

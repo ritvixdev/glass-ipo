@@ -4,13 +4,14 @@ import { useTheme } from '@/hooks/useTheme';
 import { getIPOsByStatus } from '@/mocks/ipos';
 import { IPOCategory, IPOStatus } from '@/types/ipo';
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 
 interface IPOTabViewProps {
   category: IPOCategory;
+  isLoading?: boolean;
 }
 
-export const IPOTabView: React.FC<IPOTabViewProps> = ({ category }) => {
+export const IPOTabView: React.FC<IPOTabViewProps> = ({ category, isLoading = false }) => {
   const { colors } = useTheme();
   const [activeTab, setActiveTab] = useState<IPOStatus>('live');
 
@@ -60,7 +61,11 @@ export const IPOTabView: React.FC<IPOTabViewProps> = ({ category }) => {
         </View>
       </GlassContainer>
 
-      {ipos.length > 0 ? (
+      {isLoading ? (
+        <View style={styles.emptyContainer}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      ) : ipos.length > 0 ? (
         <FlatList
           data={ipos}
           keyExtractor={(item) => item.id}

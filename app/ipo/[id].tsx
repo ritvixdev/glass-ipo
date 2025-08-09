@@ -1,16 +1,20 @@
 import { GlassContainer } from "@/components/ui/GlassContainer";
 import { useTheme } from "@/hooks/useTheme";
 import { getIPOById } from "@/mocks/ipos";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import React, { useRef } from "react";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar } from "react-native";
 import { Image } from "expo-image";
-import { BookmarkPlus, Calendar, Clock, DollarSign, TrendingUp, Users } from "lucide-react-native";
+import { BookmarkPlus, Calendar, Clock, DollarSign, TrendingUp, Users, ArrowLeft } from "lucide-react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function IPODetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors, theme } = useTheme();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const scrollViewRef = useRef<ScrollView>(null);
   
   const ipo = getIPOById(id);
 
@@ -50,6 +54,12 @@ export default function IPODetailScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+        translucent
+      />
+      
       <LinearGradient
         colors={
           theme === 'dark'
@@ -60,9 +70,30 @@ export default function IPODetailScreen() {
         style={styles.gradient}
       />
       
+      {/* Header with back button */}
+      <View style={[styles.headerBar, { paddingTop: insets.top + 16, backgroundColor: colors.background }]}>
+        <TouchableOpacity 
+          style={[styles.backButton, { backgroundColor: colors.card }]}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.push('/(tabs)');
+            }
+          }}
+        >
+          <ArrowLeft size={24} color={colors.text} />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>
+          {ipo.companyName}
+        </Text>
+        <View style={styles.headerSpacer} />
+      </View>
+      
       <ScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 80 }]}
       >
         <View style={styles.header}>
           <Image source={{ uri: ipo.logo }} style={styles.logo} contentFit="cover" />
@@ -294,9 +325,37 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
+  headerBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    zIndex: 1000,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  headerSpacer: {
+    width: 40,
+  },
   scrollContent: {
     padding: 16,
-    paddingTop: 100,
     paddingBottom: 32,
   },
   header: {

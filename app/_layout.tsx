@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ThemeProvider, useTheme } from "@/hooks/useTheme";
 import { View, ActivityIndicator } from "react-native";
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -20,9 +21,7 @@ function RootLayoutNav() {
       <Stack.Screen 
         name="ipo/[id]" 
         options={{ 
-          title: "IPO Details",
-          headerTransparent: true,
-          headerBlurEffect: "light",
+          headerShown: false,
         }} 
       />
     </Stack>
@@ -49,12 +48,14 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BundleInspector><RorkErrorBoundary><ThemedApp /></RorkErrorBoundary></BundleInspector>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BundleInspector><RorkErrorBoundary><ThemedApp /></RorkErrorBoundary></BundleInspector>
+          </GestureHandlerRootView>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }

@@ -17,14 +17,26 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
   const getIcon = () => {
     switch (stat.icon) {
       case 'trending-up':
-        return <TrendingUp size={24} color={colors.primary} />;
+        return <TrendingUp size={14} color={colors.primary} />;
       case 'users':
-        return <Users size={24} color={colors.secondary} />;
+        return <Users size={14} color={colors.secondary} />;
       case 'bar-chart-2':
-        return <BarChart2 size={24} color={colors.accent} />;
+        return <BarChart2 size={14} color={colors.accent} />;
       default:
-        return <TrendingUp size={24} color={colors.primary} />;
+        return <TrendingUp size={14} color={colors.primary} />;
     }
+  };
+
+  const getAbbreviatedTitle = (title: string) => {
+    const abbreviations: { [key: string]: string } = {
+      'Total Live IPOs': 'LIVE',
+      'Avg. Subscription': 'AVG SUB',
+      'Avg. Listing Gain': 'AVG GAIN',
+      'Market Cap': 'MKT CAP',
+      'Success Rate': 'SUCCESS',
+      'Upcoming This Week': 'UPCOMING'
+    };
+    return abbreviations[title] || title;
   };
 
   return (
@@ -32,14 +44,17 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
       style={styles.container}
       elevation="medium"
       variant="default"
-      cornerRadius={16}
-      padding={20}
+      cornerRadius={8}
+      padding={8}
       interactive={false}
+      accessible={true}
+      accessibilityRole="text"
+      accessibilityLabel={`${stat.title}: ${stat.value}${stat.change ? `, change: ${stat.change}` : ''}`}
     >
       <View style={styles.iconContainer}>{getIcon()}</View>
       <View style={styles.contentContainer}>
-        <Text style={[styles.title, { color: colors.subtext }]}>{stat.title}</Text>
-        <Text style={[styles.value, { color: colors.text }]}>{stat.value}</Text>
+        <Text style={[styles.title, { color: colors.subtext }]} accessibilityRole="text">{getAbbreviatedTitle(stat.title)}</Text>
+        <Text style={[styles.value, { color: colors.text }]} accessibilityRole="text">{stat.value}</Text>
         {stat.change && (
           <View style={styles.changeContainer}>
             <Text
@@ -62,41 +77,46 @@ export const StatsCard: React.FC<StatsCardProps> = ({ stat }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    width: (screenWidth - 64) / 3,
-    marginBottom: 16,
-    marginRight: 8,
-    minHeight: 120,
+    justifyContent: 'center',
+    width: (screenWidth - 48) / 3,
+    marginBottom: 8,
+    marginRight: 6,
+    height: 80,
   },
   iconContainer: {
-    marginRight: 12,
-    marginBottom: 12,
-    alignSelf: 'flex-start',
+    marginBottom: 6,
   },
   contentContainer: {
-    flex: 1,
+    alignItems: 'center',
+    width: '100%',
   },
   title: {
-    fontSize: 14,
+    fontSize: 9,
     fontWeight: '600',
-    marginBottom: 8,
-    opacity: 0.8,
+    marginBottom: 2,
+    opacity: 0.7,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
+    textAlign: 'center',
+    lineHeight: 11,
   },
   value: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: '800',
-    marginBottom: 6,
-    letterSpacing: -0.5,
+    marginBottom: 2,
+    letterSpacing: -0.2,
+    lineHeight: 18,
+    textAlign: 'center',
   },
   changeContainer: {
-    marginTop: 4,
+    marginTop: 1,
   },
   change: {
-    fontSize: 13,
+    fontSize: 9,
     fontWeight: '700',
-    letterSpacing: 0.2,
+    letterSpacing: 0.1,
+    textAlign: 'center',
   },
 });

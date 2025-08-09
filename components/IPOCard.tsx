@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { Calendar, TrendingUp } from 'lucide-react-native';
 import SkeletonPlaceholder from '@/components/ui/SkeletonPlaceholder';
 
@@ -18,6 +19,7 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
   const router = useRouter();
 
   const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.push(`/ipo/${ipo.id}`);
   };
 
@@ -91,7 +93,14 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, isLoading = false }) => {
   }
 
   return (
-    <TouchableOpacity onPress={handlePress} activeOpacity={0.95}>
+    <TouchableOpacity 
+      onPress={handlePress} 
+      activeOpacity={0.95}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`View details for ${ipo.companyName} IPO, status: ${getStatusText()}, price range: ${ipo.priceRange}`}
+      accessibilityHint="Tap to view detailed information about this IPO"
+    >
       <GlassContainer 
          style={styles.container}
          elevation="medium"
@@ -209,16 +218,16 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
   },
   statusText: {
     color: 'white',
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 10,
+    fontWeight: '600',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   divider: {
     height: 1,
