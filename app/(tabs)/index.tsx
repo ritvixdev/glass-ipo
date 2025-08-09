@@ -5,19 +5,16 @@ import { useTheme } from "@/hooks/useTheme";
 import { getIPOsByStatus, quickStats } from "@/mocks/ipos";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useMemo, useState } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar, RefreshControl } from "react-native";
-import { Bell, Moon, Sun } from "lucide-react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, StatusBar, RefreshControl, TextInput } from "react-native";
+import { Bell, Search } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SearchModal } from "@/components/SearchModal";
 
 export default function DashboardScreen() {
-  const { colors, theme, setTheme } = useTheme();
+  const { colors, theme } = useTheme();
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
-
-
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [theme, setTheme]);
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -51,14 +48,10 @@ export default function DashboardScreen() {
         <Text style={[styles.title, { color: colors.text }]}>IPO Tracker</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity 
-            style={[styles.iconButton, { backgroundColor: colors.card }]}
-            onPress={toggleTheme}
+            style={styles.searchIconButton}
+            onPress={() => setSearchModalVisible(true)}
           >
-            {theme === "dark" ? (
-              <Sun size={20} color={colors.text} />
-            ) : (
-              <Moon size={20} color={colors.text} />
-            )}
+            <Search size={24} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.iconButton, { backgroundColor: colors.card }]}
@@ -115,6 +108,11 @@ export default function DashboardScreen() {
           ))}
         </View>
       </ScrollView>
+      
+      <SearchModal 
+        visible={searchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
+      />
     </View>
   );
 }
@@ -147,6 +145,11 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  searchIconButton: {
+    padding: 8,
+    marginRight: 8,
   },
   iconButton: {
     width: 40,

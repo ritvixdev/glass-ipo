@@ -1,18 +1,16 @@
 import { IPOTabView } from "@/components/IPOTabView";
 import { useTheme } from "@/hooks/useTheme";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, StatusBar } from "react-native";
-import { Bell, Moon, Sun } from "lucide-react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, StatusBar, TextInput } from "react-native";
+import { Bell, Search } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SearchModal } from "@/components/SearchModal";
 
 export default function SMEIPOScreen() {
-  const { colors, theme, setTheme } = useTheme();
+  const { colors, theme } = useTheme();
   const insets = useSafeAreaInsets();
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -36,14 +34,10 @@ export default function SMEIPOScreen() {
         <Text style={[styles.title, { color: colors.text }]}>SME IPOs</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity 
-            style={[styles.iconButton, { backgroundColor: colors.card }]}
-            onPress={toggleTheme}
+            style={styles.searchIconButton}
+            onPress={() => setSearchModalVisible(true)}
           >
-            {theme === "dark" ? (
-              <Sun size={20} color={colors.text} />
-            ) : (
-              <Moon size={20} color={colors.text} />
-            )}
+            <Search size={24} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.iconButton, { backgroundColor: colors.card }]}
@@ -56,6 +50,12 @@ export default function SMEIPOScreen() {
       <View style={styles.content}>
         <IPOTabView category="sme" />
       </View>
+      
+      <SearchModal 
+        visible={searchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
+        category="sme"
+      />
     </View>
   );
 }
@@ -84,6 +84,11 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  searchIconButton: {
+    padding: 8,
+    marginRight: 8,
   },
   iconButton: {
     width: 40,

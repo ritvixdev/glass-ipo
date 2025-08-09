@@ -1,15 +1,17 @@
 import { GlassContainer } from "@/components/ui/GlassContainer";
 import { useTheme } from "@/hooks/useTheme";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Switch, StatusBar } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Switch, StatusBar, TextInput } from "react-native";
 import { Image } from "expo-image";
-import { Bell, BookmarkCheck, HelpCircle, LogOut, Moon, Settings, User, Sun } from "lucide-react-native";
+import { Bell, BookmarkCheck, HelpCircle, LogOut, Moon, Settings, User, Sun, Search } from "lucide-react-native";
+import { SearchModal } from "@/components/SearchModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { colors, theme, setTheme } = useTheme();
   const insets = useSafeAreaInsets();
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -60,14 +62,10 @@ export default function ProfileScreen() {
         <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity 
-            style={[styles.iconButton, { backgroundColor: colors.card }]}
-            onPress={toggleTheme}
+            style={styles.searchIconButton}
+            onPress={() => setSearchModalVisible(true)}
           >
-            {theme === "dark" ? (
-              <Sun size={20} color={colors.text} />
-            ) : (
-              <Moon size={20} color={colors.text} />
-            )}
+            <Search size={24} color={colors.text} />
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.iconButton, { backgroundColor: colors.card }]}
@@ -165,6 +163,11 @@ export default function ProfileScreen() {
           </GlassContainer>
         </TouchableOpacity>
       </ScrollView>
+      
+      <SearchModal 
+        visible={searchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
+      />
     </View>
   );
 }
@@ -193,6 +196,11 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  searchIconButton: {
+    padding: 8,
+    marginRight: 8,
   },
   iconButton: {
     width: 40,
